@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuSystem : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class MainMenuSystem : MonoBehaviour
 
     public void OnClickedStart(){
         Debug.Log("게임 시작");
+        SceneManager.LoadScene("UIScene", LoadSceneMode.Single);
     }
     public void OnClickedQuit(){
         Debug.Log("종료");
