@@ -402,6 +402,7 @@ GameObject:
   - component: {fileID: 943102622}
   - component: {fileID: 943102624}
   - component: {fileID: 943102623}
+  - component: {fileID: 943102625}
   m_Layer: 5
   m_Name: Velocity
   m_TagString: Untagged
@@ -527,6 +528,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 943102621}
   m_CullTransparentMesh: 1
+--- !u!114 &943102625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943102621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57eeb357960fc284d9305c6877012248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VelText: {fileID: 943102623}
 --- !u!1 &962120990
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,7 +727,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1024570010}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 943102625}
+        m_TargetAssemblyTypeName: VelocityButton, Assembly-CSharp
+        m_MethodName: SubVelocity
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1024570010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -752,51 +778,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1024570007}
   m_CullTransparentMesh: 1
---- !u!1 &1135506588
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1135506590}
-  - component: {fileID: 1135506589}
-  m_Layer: 0
-  m_Name: ARSceneManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1135506589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1135506588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f58bc10c6631d8a4581e1f425988faea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  VelText: {fileID: 943102621}
---- !u!4 &1135506590
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1135506588}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 510.29828, y: 273.47284, z: -461.69257}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1186597286
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,13 +929,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1135506588}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 943102625}
+        m_TargetAssemblyTypeName: VelocityButton, Assembly-CSharp
+        m_MethodName: AddVelocity
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1471,4 +1452,3 @@ SceneRoots:
   - {fileID: 1601028804}
   - {fileID: 962120994}
   - {fileID: 1186597289}
-  - {fileID: 1135506590}
