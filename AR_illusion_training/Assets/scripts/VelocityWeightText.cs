@@ -12,7 +12,7 @@ public class VelocityWeightText : MonoBehaviour
 {
     public TextMeshProUGUI OutputText;
     public Scrollbar VelocityWeightScrollbar;
-    float VelocityWeight = 1f;
+    private float VelocityWeight = 1f;
     
     void Start(){
         
@@ -26,6 +26,7 @@ public class VelocityWeightText : MonoBehaviour
         VelocityWeight = (float)Math.Round(VelocityWeight, 1);
         OutputText.text = VelocityWeight.ToString(); // Velocity 값을 문자열로 변환하여 표시
     }
+
 
    
 }
