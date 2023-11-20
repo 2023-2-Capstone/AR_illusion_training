@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,34 +8,29 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Runtime.InteropServices;
 
-public class VelocityButton : MonoBehaviour
+public class VelocityWeightText : MonoBehaviour
 {
 #if UNITY_IOS
     [DllImport("__Internal")]
     private static extern void _startTracking(string objectName);
 #endif
 
-    public TextMeshProUGUI VelText;
-    float Velocity;
+    public TextMeshProUGUI OutputText;
+    public Scrollbar VelocityWeightScrollbar;
+    float VelocityWeight = 1f;
     bool isTracking = false;
 
     void Start(){
-        Velocity = 0;
-        UpdateVelocityText();
         StartSpeedTracking();
     }
-
-    public void AddVelocity(){
-        Velocity += 1;
-        UpdateVelocityText();
-    }
-    public void SubVelocity(){
-        Velocity -= 1;
-        UpdateVelocityText();
+    void Update(){
+        UpdateVelocity();
     }
 
-    private void UpdateVelocityText() {
-        VelText.text = Velocity.ToString(); // Velocity 값을 문자열로 변환하여 표시
+    private void UpdateVelocity() {
+        VelocityWeight = VelocityWeightScrollbar.value * 2;
+        VelocityWeight = (float)Math.Round(VelocityWeight, 1);
+        OutputText.text = VelocityWeight.ToString(); // Velocity 값을 문자열로 변환하여 표시
     }
 
     public void StartSpeedTracking()
