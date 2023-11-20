@@ -24,7 +24,6 @@ public class VelocityButton : MonoBehaviour
         StartSpeedTracking();
     }
 
-    //ref은 c++의 &이다.
     public void AddVelocity(){
         Velocity += 1;
         UpdateVelocityText();
