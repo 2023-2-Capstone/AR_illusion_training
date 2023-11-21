@@ -142,7 +142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!198 &25264488
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4947,7 +4947,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 25264487}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 468ea6c98cd64494abbc2c2f34d6cde2, type: 3}
   m_Name: 
@@ -4959,7 +4959,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 25264487}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afcab4e7938ae724a8a59ecac3580761, type: 3}
   m_Name: 
@@ -10619,9 +10619,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BirdToggle: {fileID: 418276190}
-  MamaBirdPrefab: {fileID: 3928040469382812635, guid: 0b599ccbee7274b31b53bfd3b7856104,
+  MamaBirdPrefab: {fileID: 7957833072274404953, guid: 3355f6bfa6db8b24281b827de929694c,
     type: 3}
-  BabyBirdPrefab: {fileID: 1664211336217714588, guid: ea1cc614985094a37a9c0f15c85d6b3b,
+  BabyBirdPrefab: {fileID: 161766660727748596, guid: 05ce920d629922a4eb4795ef7494ce5c,
     type: 3}
   ARCamera: {fileID: 1204404889}
 --- !u!4 &1522967275
@@ -10786,7 +10786,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!120 &2108317019
 LineRenderer:
   serializedVersion: 2

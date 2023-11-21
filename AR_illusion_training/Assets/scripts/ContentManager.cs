@@ -31,8 +31,12 @@ public class ContentManager : MonoBehaviour
             }
             else{
 
-                SpawnedBird = Instantiate(WhichBird(),ray.origin,Quaternion.identity);
-                SpawnedBird.GetComponent<Rigidbody>().AddForce(ray.direction*100);
+                Vector3 spawnPosition = ARCamera.transform.position + ARCamera.transform.forward * 10; // 카메라로부터 10미터 앞
+                //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.right; 오른쪽으로 이동
+                //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.left; 왼쪽으로 이동
+                SpawnedBird = Instantiate(WhichBird(), spawnPosition, Quaternion.identity);
+                Destroy(SpawnedBird, 3f); // 3초 후에 파괴
+                // SpawnedBird.GetComponent<Rigidbody>().AddForce(ray.direction * 100);
             }
         }
     }

@@ -10,7 +10,8 @@ public class MamaBird : MonoBehaviour
     public Camera ARCamera;
     void Start()
     {
-        ARCamera=GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        ARCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
     }
 
     // Update is called once per frame
