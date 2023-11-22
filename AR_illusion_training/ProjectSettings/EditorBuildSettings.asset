@@ -8,14 +8,14 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ExampleAssets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/First.unity
     guid: 48755527b6e304b6ca28729b0f1fe51b
-  - enabled: 0
-    path: Assets/UI/MainMenu.unity
+  - enabled: 1
+    path: Assets/MainMenu.unity
     guid: 06f1201ecd5067a428be861fa0d87d78
-  - enabled: 0
-    path: Assets/UI/UIScene.unity
+  - enabled: 1
+    path: Assets/GamePlayScene.unity
     guid: a15dbd95cc746144491873c2675f95c8
   m_configObjects:
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 744b813df90924c169af73489b8325de,

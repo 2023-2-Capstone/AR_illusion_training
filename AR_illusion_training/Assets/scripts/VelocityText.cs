@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,36 +8,28 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Runtime.InteropServices;
 
-public class VelocityButton : MonoBehaviour
+public class VelocityText : MonoBehaviour
 {
 #if UNITY_IOS
     [DllImport("__Internal")]
     private static extern void _startTracking(string objectName);
 #endif
-
-    public TextMeshProUGUI VelText;
+    public TextMeshProUGUI OutputText;
     float Velocity;
     bool isTracking = false;
 
-    void Start(){
-        Velocity = 0;
-        UpdateVelocityText();
+    
+    void Start()
+    {
         StartSpeedTracking();
+        Velocity = 0f;
     }
 
-    //ref은 c++의 &이다.
-    public void AddVelocity(){
-        Velocity += 1;
-        UpdateVelocityText();
-    }
-    public void SubVelocity(){
-        Velocity -= 1;
-        UpdateVelocityText();
+    void Update()
+    {
+        
     }
 
-    private void UpdateVelocityText() {
-        VelText.text = Velocity.ToString(); // Velocity 값을 문자열로 변환하여 표시
-    }
 
     public void StartSpeedTracking()
     {
@@ -56,5 +49,8 @@ public class VelocityButton : MonoBehaviour
     public void SpeedCallBackMethod(string speed)
     {
         Debug.Log($"유니티에서 받은 스피드: {speed}");
+        //아이폰이 없어서 실험불가. 되는지 확인해주세요.
+        OutputText.text = speed;
+        Velocity = float.Parse(speed);
     }
 }
