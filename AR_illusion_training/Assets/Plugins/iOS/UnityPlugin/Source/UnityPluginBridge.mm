@@ -34,4 +34,20 @@ extern "C" {
     void _startTracking(const char* objectName) {
         [[UnityPlugin shared] startTrackingWithObjectName:[NSString stringWithUTF8String:objectName]];
     }
+    
+    void _stopTracking() {
+        [[UnityPlugin shared] stopTracking];
+    }
+
+    void _makeVibrate() {
+        [[UnityPlugin shared] makeVibrate];
+    }
+    
+    void _getEnergeBurned(const char* objectName) {
+        [[UnityPlugin shared] getEnergeBurnedWithObjectName:[NSString stringWithUTF8String:objectName]];
+    }
+
+    void _getHeartRateData(const char* objectName) {
+        [[UnityPlugin shared] getHeartRateDataWithObjectName:[NSString stringWithUTF8String:objectName]];
+    }
 }
