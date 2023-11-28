@@ -10619,9 +10619,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BirdToggle: {fileID: 418276190}
-  MamaBirdPrefab: {fileID: 7957833072274404953, guid: 3355f6bfa6db8b24281b827de929694c,
+  MamaBirdPrefab: {fileID: 2520923091586755483, guid: cd166d65ac27846aaa723ad911e89ec8,
     type: 3}
-  BabyBirdPrefab: {fileID: 161766660727748596, guid: 05ce920d629922a4eb4795ef7494ce5c,
+  BabyBirdPrefab: {fileID: 7554215317149794847, guid: 89d6ab11ac5c847bcad1e0732c862d33,
     type: 3}
   ARCamera: {fileID: 1204404889}
 --- !u!4 &1522967275
@@ -10632,7 +10632,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1522967273}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
