@@ -269,7 +269,7 @@ public class DataSystem : MonoBehaviour
     /*
     모드 제어 함수. 버튼용
     */
-    void ChangeExerciseMode(){
+    public void ChangeExerciseMode(){
         if(Exercise == ExerciseMode.Pullup){
             Exercise = ExerciseMode.Pushup;
         }else if(Exercise == ExerciseMode.Pushup){
@@ -277,7 +277,7 @@ public class DataSystem : MonoBehaviour
         }
     }
 
-    void ChangePlayState(){
+    public void ChangePlayState(){
         if(PlayState == GamePlayState.NotPlaying){
             PlayState = GamePlayState.Playing;
         }else if(PlayState == GamePlayState.Playing){
@@ -290,6 +290,26 @@ public class DataSystem : MonoBehaviour
 
     float나 double의 경우 소수점 3자리에서 반올림. 소수점 2자리까지 출력
     */
+    public string GetPlayState(){
+        if(PlayState == GamePlayState.NotPlaying){
+            return "NotPlaying";
+        }else if(PlayState == GamePlayState.Playing){
+            return "Playing";
+        }else{
+            return "WrongPlayState";
+        }
+    }
+
+    public string GetExerciseState(){
+        if(Exercise == ExerciseMode.Pullup){
+            return "Pullup";
+        }else if(Exercise == ExerciseMode.Pushup){
+            return "Pushup";
+        }else{
+            return "WrongExerciseMode";
+        }
+    }
+
     public int GetWeight(){
         return UserWeight;
     }
