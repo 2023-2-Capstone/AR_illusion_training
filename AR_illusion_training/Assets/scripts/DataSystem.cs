@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using System;
+
 
 public class DataSystem : MonoBehaviour
 {
@@ -22,15 +24,18 @@ public class DataSystem : MonoBehaviour
     private static extern void _getHeartRateData(string objectName);
     */
 #endif
-    public int UserWeight = 0;
 
+    GameObject WeightData;
+
+    private int UserWeight = 0;
     private bool isTracking = false;
     private int Reps = 0; //운동 횟수.
+    private float SpeedThresholdForReps = 1.5f;
     private float Timer = 0f;
     private bool TimerActivated = false;
     private float RepsPerTime = 0f;
-    private float pullupkcal = 1f; //77kg 성인남성 기준
-    private float pushupkcal = 0.47f; //77kg 성인남성 기준
+    private float Pullupkcal = 1f; //77kg 성인남성 기준
+    private float Pushupkcal = 0.47f; //77kg 성인남성 기준
     private float DeviceSpeed = 0f;
     private double DeviceDirX = 0f;
     private double DeviceDirY = 0f;
@@ -39,6 +44,15 @@ public class DataSystem : MonoBehaviour
     void Start()
     {
         StartSpeedTracking();
+
+        //이전 씬에서 파괴되지 않은 오브젝트에서 값 추출 후 그 오브젝트 파괴
+        WeightData = GameObject.Find("WeightData");
+        UserWeight = WeightData.GetComponent<WeightData>().Weight;
+        Destroy(WeightData);
+
+        //몸무게에 알맞게 운동 1회당 소모 칼로리 변경
+        Pullupkcal = (Pullupkcal / 77f) * UserWeight;
+        Pushupkcal = (Pushupkcal / 77f) * UserWeight;
     }
 
     
@@ -48,9 +62,9 @@ public class DataSystem : MonoBehaviour
         if(TimerActivated){
             Timer += Time.deltaTime;
         }
+
+        //Reps 증가 명령어
         
-
-
     }
 
     /*
@@ -67,6 +81,13 @@ public class DataSystem : MonoBehaviour
     public void ResetTimer(){
         Timer = 0f;
         TimerActivated = false;
+    }
+
+    /*
+    Reps 제어 함수
+    */
+    public void ResetReps(){
+        Reps = 0;
     }
 
     /*
@@ -151,7 +172,6 @@ public class DataSystem : MonoBehaviour
     */
     public float GetTime()
     {
-        
         return Mathf.Round(Timer * 100f) / 100f;
     }
 
@@ -180,4 +200,12 @@ public class DataSystem : MonoBehaviour
         return Math.Round(DeviceDirZ, 2);
     }
     
+    public float GetSumOfPullupkcal(){
+        return Mathf.Round(Reps * Pullupkcal * 100f) / 100f;
+    }
+
+    public float GetSumOfPushupkcal(){
+        return Mathf.Round(Reps * Pushupkcal * 100f) / 100f;
+    }
+
 }
