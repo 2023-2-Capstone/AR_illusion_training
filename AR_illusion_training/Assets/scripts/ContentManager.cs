@@ -9,12 +9,13 @@ public class ContentManager : MonoBehaviour
     public GameObject MamaBirdPrefab;
     public GameObject BabyBirdPrefab;
     private GameObject SpawnedBird;
+    private GameObject SpawnEffect;
     public Camera ARCamera;
     // Start is called before the first frame update
     private List<RaycastResult> raycastResults=new List<RaycastResult>();
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -35,23 +36,24 @@ public class ContentManager : MonoBehaviour
                 //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.right; 오른쪽으로 이동
                 //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.left; 왼쪽으로 이동
                 // SpawnedBird = Instantiate(WhichBird(), spawnPosition, Quaternion.identity);
-                SpawnedBird = Instantiate(WhichBird(), spawnPosition, Quaternion.Euler(90, 0, 0));
-
+                SpawnedBird = Instantiate(MamaBirdPrefab, spawnPosition, Quaternion.Euler(90, 0, 0));
+                SpawnEffect = Instantiate(BabyBirdPrefab,ARCamera.transform.position-ARCamera.transform.up,Quaternion.Euler(0,0,0));
                 
                 Destroy(SpawnedBird, 3f); // 3초 후에 파괴
+                Destroy(SpawnEffect, 3f);
                 // SpawnedBird.GetComponent<Rigidbody>().AddForce(ray.direction * 100);
             }
         }
     }
 
-    public GameObject WhichBird(){
-        if(BirdToggle.isOn){
-            return MamaBirdPrefab;
-        }
-        else{
-            return BabyBirdPrefab;
-        }
-    }
+    // public GameObject WhichBird(){
+    //     if(BirdToggle.isOn){
+    //         return MamaBirdPrefab;
+    //     }
+    //     else{
+    //         return BabyBirdPrefab;
+    //     }
+    // }
 
     private bool IsPointerOverUI(Vector2 fingerPosition){
         PointerEventData eventDataPosition=new PointerEventData(EventSystem.current);

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10621,7 +10621,7 @@ MonoBehaviour:
   BirdToggle: {fileID: 418276190}
   MamaBirdPrefab: {fileID: 2520923091586755483, guid: cd166d65ac27846aaa723ad911e89ec8,
     type: 3}
-  BabyBirdPrefab: {fileID: 7554215317149794847, guid: 89d6ab11ac5c847bcad1e0732c862d33,
+  BabyBirdPrefab: {fileID: 3744133877081091469, guid: a2a060732547fe64581bb0cb3c2bdf1d,
     type: 3}
   ARCamera: {fileID: 1204404889}
 --- !u!4 &1522967275
