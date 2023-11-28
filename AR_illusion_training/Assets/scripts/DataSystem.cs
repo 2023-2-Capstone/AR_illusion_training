@@ -24,16 +24,40 @@ public class DataSystem : MonoBehaviour
     private static extern void _getHeartRateData(string objectName);
     */
 #endif
+    /*
+    NotPlaying 상태
+    - 운동 모드 설정 가능
+    - 가중치 설정 가능
+    - 타이머, 횟수, 칼로리 전부 초기화 상태
 
-    GameObject WeightData;
+    Playing 상태
+    - 운동 모드 변경 불가
+    - 가중치 설정 불가
+    - 타이머 지속적으로 증가
+    - 횟수 증가, 그에 맞게 칼로리 증가
+    */
+    enum GamePlayState{
+        NotPlaying,
+        Playing
+    }
+    enum ExerciseMode{
+        Pullup,
+        Pushup
+    }
+
+    GameObject UserWeightData;
 
     private int UserWeight = 0;
     private bool isTracking = false;
+    private GamePlayState PlayState = GamePlayState.NotPlaying; //기본모드 : NotPlaying
+    private ExerciseMode Exercise = ExerciseMode.Pullup; //기본모드 : 풀업
     private int Reps = 0; //운동 횟수.
-    private float SpeedThresholdForReps = 1.5f;
+    private float SpeedThresholdForPullup = 1.5f;
+    private float SpeedThresholdForPushup = 1.5f;
     private float Timer = 0f;
     private bool TimerActivated = false;
     private float RepsPerTime = 0f;
+    private float Burnedkcals = 0f;
     private float Pullupkcal = 1f; //77kg 성인남성 기준
     private float Pushupkcal = 0.47f; //77kg 성인남성 기준
     private float DeviceSpeed = 0f;
@@ -46,9 +70,9 @@ public class DataSystem : MonoBehaviour
         StartSpeedTracking();
 
         //이전 씬에서 파괴되지 않은 오브젝트에서 값 추출 후 그 오브젝트 파괴
-        WeightData = GameObject.Find("WeightData");
-        UserWeight = WeightData.GetComponent<WeightData>().Weight;
-        Destroy(WeightData);
+        UserWeightData = GameObject.Find("WeightData");
+        UserWeight = UserWeightData.GetComponent<WeightData>().Weight;
+        Destroy(UserWeightData);
 
         //몸무게에 알맞게 운동 1회당 소모 칼로리 변경
         Pullupkcal = (Pullupkcal / 77f) * UserWeight;
@@ -58,13 +82,37 @@ public class DataSystem : MonoBehaviour
     
     void Update()
     {
-        //타이머 제어 명령어
-        if(TimerActivated){
-            Timer += Time.deltaTime;
-        }
+        if(PlayState == GamePlayState.NotPlaying)
+        {
 
-        //Reps 증가 명령어
-        
+        }
+        else if(PlayState == GamePlayState.Playing)
+        {
+            //타이머 작동 명령어
+            if(TimerActivated)
+                Timer += Time.deltaTime;
+            
+
+            if(Exercise == ExerciseMode.Pullup){
+
+            }else if(Exercise == ExerciseMode.Pushup){
+
+            }
+        }
+    }
+
+    /*
+    운동 시작 및 종료
+    */
+    public void StartExercise(){
+        PlayState = GamePlayState.Playing;
+        ResetTimer();
+        ResetReps();
+    }
+    public void EndExercise(){
+        PlayState = GamePlayState.NotPlaying;
+        ResetTimer();
+        ResetReps();
     }
 
     /*
@@ -91,7 +139,18 @@ public class DataSystem : MonoBehaviour
     }
 
     /*
-    iOS 관련 함수
+    조건용 함수
+    */
+    bool CanCountPullup(){
+        return true;
+    }
+
+    bool CanCountPushup(){
+        return true;
+    }
+
+    /*
+    iOS 관련 함수. 가속도, 방향, 진동
     */
     public void StartSpeedTracking()
     {
@@ -175,11 +234,28 @@ public class DataSystem : MonoBehaviour
         return Mathf.Round(Timer * 100f) / 100f;
     }
 
+    public string GetExerciseMode(){
+        if(Exercise == ExerciseMode.Pullup){
+            return "Pullup";
+        }
+        else if(Exercise == ExerciseMode.Pushup){
+            return "Pushup";
+        }else{
+            return "Wrong Exercise";
+        }
+    }
+
     public float GetRepsPerTime()
     {
         return RepsPerTime;
     }
+    public float GetSumOfkcal(){
+        return Mathf.Round(Reps * Pullupkcal * 100f) / 100f;
+    }
 
+    public float GetSumOfPushupkcal(){
+        return Mathf.Round(Reps * Pushupkcal * 100f) / 100f;
+    }
     public float GetDeviceSpeed()
     {
         return Mathf.Round(DeviceSpeed * 100f) / 100f;
@@ -199,13 +275,4 @@ public class DataSystem : MonoBehaviour
     {
         return Math.Round(DeviceDirZ, 2);
     }
-    
-    public float GetSumOfPullupkcal(){
-        return Mathf.Round(Reps * Pullupkcal * 100f) / 100f;
-    }
-
-    public float GetSumOfPushupkcal(){
-        return Mathf.Round(Reps * Pushupkcal * 100f) / 100f;
-    }
-
 }
