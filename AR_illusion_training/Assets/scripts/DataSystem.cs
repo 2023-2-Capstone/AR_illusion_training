@@ -35,6 +35,8 @@ public class DataSystem : MonoBehaviour
     - 가중치 설정 불가
     - 타이머 지속적으로 증가
     - 횟수 증가, 그에 맞게 칼로리 증가
+
+    운동 모드 설정과 가중치 설정의 활성화/비활성화는 버튼으로 이루어지므로 그 쪽 코드에서 처리
     */
     enum GamePlayState{
         NotPlaying,
@@ -49,12 +51,14 @@ public class DataSystem : MonoBehaviour
 
     private int UserWeight = 0;
     private bool isTracking = false;
+    private bool CanCountAgain = true; //프레임마다 카운팅 방지
     private GamePlayState PlayState = GamePlayState.NotPlaying; //기본모드 : NotPlaying
     private ExerciseMode Exercise = ExerciseMode.Pullup; //기본모드 : 풀업
+    private int HalfReps = 0; //올라갔다 내려가야 횟수 인정을 위함
     private int Reps = 0; //운동 횟수.
     private float SpeedThresholdForPullup = 1.5f;
     private float SpeedThresholdForPushup = 1.5f;
-    private float Timer = 0f;
+    private float Timer = 0f; //단위는 초
     private bool TimerActivated = false;
     private float RepsPerTime = 0f;
     private float Burnedkcals = 0f;
@@ -82,22 +86,56 @@ public class DataSystem : MonoBehaviour
     
     void Update()
     {
-        if(PlayState == GamePlayState.NotPlaying)
-        {
 
-        }
-        else if(PlayState == GamePlayState.Playing)
+        //NotPlaying일 때는 Update에서 수행할 함수 없음.
+
+        if(PlayState == GamePlayState.Playing)
         {
             //타이머 작동 명령어
+            //Playing 상태가 아니면 아예 타이머를 조작할 수 없다.
+            //단, 일시정지 기능을 추가하기 위해 TimerActivated를 사용
             if(TimerActivated)
                 Timer += Time.deltaTime;
-            
 
+
+            //theshold를 넘으면 카운트, theshold 아래로 다시 내려올 때까지 카운트 중지
+            //Z축 처리를 어떻게 할 지 몰라 일단 가속계로만 측정.
             if(Exercise == ExerciseMode.Pullup){
-
+                if(DeviceSpeed >= SpeedThresholdForPullup){
+                    if(CanCountAgain){
+                        HalfReps++;
+                        CanCountAgain = false;
+                    }
+                }else{
+                    CanCountAgain = true;
+                }
             }else if(Exercise == ExerciseMode.Pushup){
-
+                if(DeviceSpeed >= SpeedThresholdForPushup){
+                    if(CanCountAgain){
+                        HalfReps++;
+                        CanCountAgain = false;
+                    }
+                }else{
+                    CanCountAgain = true;
+                }
             }
+            
+            //HalfReps가 2개면 Reps 한 개로 변환, 진동발생
+            if(HalfReps == 2){
+                Reps++;
+                HalfReps = 0;
+                PlayVibration();
+            }
+
+            //칼로리 측정
+            if(Exercise == ExerciseMode.Pullup){
+                Burnedkcals = Reps * Pullupkcal;
+            }else if(Exercise == ExerciseMode.Pushup){
+                Burnedkcals = Reps * Pushupkcal;
+            }
+
+            //시간당 운동 횟수 처리
+            RepsPerTime = Reps / Timer;
         }
     }
 
@@ -106,13 +144,21 @@ public class DataSystem : MonoBehaviour
     */
     public void StartExercise(){
         PlayState = GamePlayState.Playing;
-        ResetTimer();
-        ResetReps();
+        ResetAllValues();
+        TimerActivated = true;
     }
+
     public void EndExercise(){
         PlayState = GamePlayState.NotPlaying;
+        ResetAllValues();
+    }
+
+    void ResetAllValues(){
         ResetTimer();
         ResetReps();
+        ResetBurnedkcals();
+        HalfReps = 0;
+        CanCountAgain = true;
     }
 
     /*
@@ -139,14 +185,10 @@ public class DataSystem : MonoBehaviour
     }
 
     /*
-    조건용 함수
+    kcal 제어 함수
     */
-    bool CanCountPullup(){
-        return true;
-    }
-
-    bool CanCountPushup(){
-        return true;
+    public void ResetBurnedkcals(){
+        Burnedkcals = 0f;
     }
 
     /*
@@ -202,7 +244,7 @@ public class DataSystem : MonoBehaviour
             }
     }
 
-    public void PlayVibrate(){
+    public void PlayVibration(){
 #if UNITY_IOS
         _makeVibrate();
 #else
@@ -225,36 +267,45 @@ public class DataSystem : MonoBehaviour
     */
 
     /*
+    모드 제어 함수. 버튼용
+    */
+    void ChangeExerciseMode(){
+        if(Exercise == ExerciseMode.Pullup){
+            Exercise = ExerciseMode.Pushup;
+        }else if(Exercise == ExerciseMode.Pushup){
+            Exercise = ExerciseMode.Pullup;
+        }
+    }
+
+    void ChangePlayState(){
+        if(PlayState == GamePlayState.NotPlaying){
+            PlayState = GamePlayState.Playing;
+        }else if(PlayState == GamePlayState.Playing){
+            PlayState = GamePlayState.NotPlaying;
+        }
+    }
+
+    /*
     변수 반환 함수들
 
     float나 double의 경우 소수점 3자리에서 반올림. 소수점 2자리까지 출력
     */
+    public int GetWeight(){
+        return UserWeight;
+    }
     public float GetTime()
     {
         return Mathf.Round(Timer * 100f) / 100f;
     }
-
-    public string GetExerciseMode(){
-        if(Exercise == ExerciseMode.Pullup){
-            return "Pullup";
-        }
-        else if(Exercise == ExerciseMode.Pushup){
-            return "Pushup";
-        }else{
-            return "Wrong Exercise";
-        }
+    public int GetReps(){
+        return Reps;
     }
-
     public float GetRepsPerTime()
     {
         return RepsPerTime;
     }
-    public float GetSumOfkcal(){
-        return Mathf.Round(Reps * Pullupkcal * 100f) / 100f;
-    }
-
-    public float GetSumOfPushupkcal(){
-        return Mathf.Round(Reps * Pushupkcal * 100f) / 100f;
+    public float GetBurnedkcals(){
+        return Mathf.Round(Burnedkcals* 100f) / 100f;
     }
     public float GetDeviceSpeed()
     {
