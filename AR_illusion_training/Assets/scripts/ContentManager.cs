@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Runtime.InteropServices;
+
+
 public class ContentManager : MonoBehaviour
 {
+#if UNITY_IOS
+    [DllImport("__Internal")]
+    private static extern void _startTracking(string objectName);
+#endif
     public Toggle BirdToggle;
     public GameObject MamaBirdPrefab;
     public GameObject BabyBirdPrefab;
@@ -13,6 +20,41 @@ public class ContentManager : MonoBehaviour
     public Camera ARCamera;
     // Start is called before the first frame update
     private List<RaycastResult> raycastResults=new List<RaycastResult>();
+    float Velocity;
+    bool isTracking=false;
+
+    public void StartSpeedTracking()
+    {
+        if (this.isTracking == false)
+        {
+            this.isTracking = true;
+#if UNITY_IOS
+            Debug.Log($"GameObjectName: {gameObject.name}");
+            _startTracking(gameObject.name);
+#else
+            Debug.Log("No iOS Device Found");
+#endif
+        }
+
+    }
+    public void SpeedCallBackMethod(string speed)
+    {
+        double num=double.Parse(speed);
+        Debug.Log($"유니티에서 받은 스피드: {speed}");
+        if (num > 3) {
+                Vector3 spawnPosition = ARCamera.transform.position + ARCamera.transform.up*5; //카메라에서 위쪽으로 이동
+                //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.right; 오른쪽으로 이동
+                //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.left; 왼쪽으로 이동
+                // SpawnedBird = Instantiate(WhichBird(), spawnPosition, Quaternion.identity);
+                SpawnedBird = Instantiate(MamaBirdPrefab, spawnPosition, Quaternion.Euler(90, 0, 0));
+                SpawnEffect = Instantiate(BabyBirdPrefab,ARCamera.transform.position-ARCamera.transform.up,Quaternion.Euler(0,0,0));
+                
+                StartCoroutine(FadeOut(SpawnedBird, 3f)); // 3초 동안 페이드 아웃
+                StartCoroutine(FadeOut(SpawnEffect, 3f));
+                // SpawnedBird.GetComponent<Rigidbody>().AddForce(ray.direction * 100);
+            // 이펙트 생성
+        }
+    }
     void Start()
     {
 
@@ -31,17 +73,17 @@ public class ContentManager : MonoBehaviour
                 Debug.Log("Do nothing!");
             }
             else{
-
-                Vector3 spawnPosition = ARCamera.transform.position + ARCamera.transform.up*5; //카메라에서 위쪽으로 이동
-                //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.right; 오른쪽으로 이동
-                //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.left; 왼쪽으로 이동
-                // SpawnedBird = Instantiate(WhichBird(), spawnPosition, Quaternion.identity);
-                SpawnedBird = Instantiate(MamaBirdPrefab, spawnPosition, Quaternion.Euler(90, 0, 0));
-                SpawnEffect = Instantiate(BabyBirdPrefab,ARCamera.transform.position-ARCamera.transform.up,Quaternion.Euler(0,0,0));
+                StartSpeedTracking();
+                // Vector3 spawnPosition = ARCamera.transform.position + ARCamera.transform.up*5; //카메라에서 위쪽으로 이동
+                // //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.right; 오른쪽으로 이동
+                // //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.left; 왼쪽으로 이동
+                // // SpawnedBird = Instantiate(WhichBird(), spawnPosition, Quaternion.identity);
+                // SpawnedBird = Instantiate(MamaBirdPrefab, spawnPosition, Quaternion.Euler(90, 0, 0));
+                // SpawnEffect = Instantiate(BabyBirdPrefab,ARCamera.transform.position-ARCamera.transform.up,Quaternion.Euler(0,0,0));
                 
-                Destroy(SpawnedBird, 3f); // 3초 후에 파괴
-                Destroy(SpawnEffect, 3f);
-                // SpawnedBird.GetComponent<Rigidbody>().AddForce(ray.direction * 100);
+                // StartCoroutine(FadeOut(SpawnedBird, 3f)); // 3초 동안 페이드 아웃
+                // StartCoroutine(FadeOut(SpawnEffect, 3f));
+                // // SpawnedBird.GetComponent<Rigidbody>().AddForce(ray.direction * 100);
             }
         }
     }
@@ -61,5 +103,21 @@ public class ContentManager : MonoBehaviour
         EventSystem.current.RaycastAll(eventDataPosition,raycastResults);
         return raycastResults.Count>0;
     }
-
+    IEnumerator FadeOut(GameObject obj, float duration)
+    {
+        Renderer renderer = obj.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Material mat = renderer.material;
+            Color initialColor = mat.color;
+            for (float t = 0; t < 1; t += Time.deltaTime / duration)
+            {
+                Color newColor = new Color(initialColor.r, initialColor.g, initialColor.b, Mathf.Lerp(1, 0, t));
+                mat.color = newColor;
+                yield return null;
+            }
+        }
+        Destroy(obj);
+    }
 }
+
