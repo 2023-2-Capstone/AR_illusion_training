@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Runtime.InteropServices;
 
-public class VelocityWeightText : MonoBehaviour
+public class EffectWeightText : MonoBehaviour
 {
     public TextMeshProUGUI OutputText;
     public Scrollbar VelocityWeightScrollbar;
