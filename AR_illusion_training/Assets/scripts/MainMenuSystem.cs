@@ -19,7 +19,7 @@ public class MainMenuSystem : MonoBehaviour
 
     public void OnClickedStart(){
         Debug.Log("게임 시작");
-        SceneManager.LoadScene("GamePlayScene", LoadSceneMode.Single);
+        SceneManager.LoadScene("BioData", LoadSceneMode.Single);
     }
     public void OnClickedQuit(){
         Debug.Log("종료");
