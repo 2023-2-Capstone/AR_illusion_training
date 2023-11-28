@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DataSystem : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class DataSystem : MonoBehaviour
     private int Reps = 0; //운동 횟수.
     private float Timer = 0f;
     private bool TimerActivated = false;
-    private float RepsPerTimer = 0f;
+    private float RepsPerTime = 0f;
     private float pullupkcal = 1f; //77kg 성인남성 기준
     private float pushupkcal = 0.47f; //77kg 성인남성 기준
     private float DeviceSpeed = 0f;
@@ -43,13 +44,34 @@ public class DataSystem : MonoBehaviour
     
     void Update()
     {
-        //타이머 작동 명령어
-        Timer += Time.deltaTime;
-        Timer = Mathf.Round(Timer * 100f) / 100f;
+        //타이머 제어 명령어
+        if(TimerActivated){
+            Timer += Time.deltaTime;
+        }
+        
 
 
     }
 
+    /*
+    타이머 제어 함수
+    */
+    public void PlayTimer(){
+        TimerActivated = true;
+    }
+
+    public void StopTimer(){
+        TimerActivated = false;
+    }
+
+    public void ResetTimer(){
+        Timer = 0f;
+        TimerActivated = false;
+    }
+
+    /*
+    iOS 관련 함수
+    */
     public void StartSpeedTracking()
     {
         if (this.isTracking == false)
@@ -65,14 +87,12 @@ public class DataSystem : MonoBehaviour
             Debug.Log("No iOS Device Found");
 #endif
         }
-
     }
 
     public void SpeedCallBackMethod(string speed)
     {
         Debug.Log($"유니티에서 받은 스피드: {speed}");
-        //speed float로 변환 후 소수점 3자리에서 반올림
-        DeviceSpeed = Mathf.Round(float.Parse(speed) * 100f) / 100f;
+        DeviceSpeed = float.Parse(speed);
     }
 
     public void DirectionCallBackMethod(string direction)
@@ -83,12 +103,36 @@ public class DataSystem : MonoBehaviour
         "x:-0.0227203369140625 y:-0.9516754150390625 z:-0.2386932373046875"
         와 같은 string 형태로 들어온다.
         */
+        string[] parts = direction.Split(' ');
 
+            foreach (string part in parts)
+            {
+                if (part.StartsWith("x:"))
+                {
+                    DeviceDirX = double.Parse(part.Substring(2));
+                }
+                else if (part.StartsWith("y:"))
+                {
+                    DeviceDirY = double.Parse(part.Substring(2));
+                }
+                else if (part.StartsWith("z:"))
+                {
+                    DeviceDirZ = double.Parse(part.Substring(2));
+                }
+            }
+    }
+
+    public void PlayVibrate(){
+#if UNITY_IOS
+        _makeVibrate();
+#else
+        Debug.Log("No iOS Device Found");
+#endif
     }
 
     /*
-    ***사용하지 않음***
-
+    사용하지 않음
+    *
     public void CalorieCallBackMethod(string calorie)
     {
         Debug.Log($"유니티에서 받은 칼로리: {calorie}");
@@ -100,5 +144,40 @@ public class DataSystem : MonoBehaviour
     }
     */
 
+    /*
+    변수 반환 함수들
 
+    float나 double의 경우 소수점 3자리에서 반올림. 소수점 2자리까지 출력
+    */
+    public float GetTime()
+    {
+        
+        return Mathf.Round(Timer * 100f) / 100f;
+    }
+
+    public float GetRepsPerTime()
+    {
+        return RepsPerTime;
+    }
+
+    public float GetDeviceSpeed()
+    {
+        return Mathf.Round(DeviceSpeed * 100f) / 100f;
+    }
+
+    public double GetDeviceDirX()
+    {
+        return Math.Round(DeviceDirX, 2);
+    }
+
+    public double GetDeviceDirY()
+    {
+        return Math.Round(DeviceDirY, 2);
+    }
+
+    public double GetDeviceDirZ()
+    {
+        return Math.Round(DeviceDirZ, 2);
+    }
+    
 }
