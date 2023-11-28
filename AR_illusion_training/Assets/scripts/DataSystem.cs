@@ -267,8 +267,9 @@ public class DataSystem : MonoBehaviour
     */
 
     /*
-    모드 제어 함수. 버튼용
+    State 제어 함수
     */
+    //ExerciseModeButton이 사용
     public void ChangeExerciseMode(){
         if(Exercise == ExerciseMode.Pullup){
             Exercise = ExerciseMode.Pushup;
@@ -277,11 +278,12 @@ public class DataSystem : MonoBehaviour
         }
     }
 
+    //PlayButton 클릭 시 발생
     public void ChangePlayState(){
         if(PlayState == GamePlayState.NotPlaying){
-            PlayState = GamePlayState.Playing;
+            StartExercise();
         }else if(PlayState == GamePlayState.Playing){
-            PlayState = GamePlayState.NotPlaying;
+            EndExercise();
         }
     }
 
