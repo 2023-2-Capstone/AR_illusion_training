@@ -21,6 +21,7 @@ public static class SwiftPostProcess
             var proj = new PBXProject();
             proj.ReadFromFile(projPath);
 
+            string plistPath = Path.Combine(buildPath, "Info.plist");
             // var targetGuid = proj.TargetGuidByName(PBXProject.GetUnityTargetName());
             var targetGuid = proj.GetUnityMainTargetGuid();
 
@@ -41,6 +42,20 @@ public static class SwiftPostProcess
             proj.AddBuildProperty(targetGuid, "COREML_CODEGEN_LANGUAGE", "Swift");
 
             proj.WriteToFile(projPath);
+
+            var manager = new ProjectCapabilityManager(projPath, "Entitlements.entitlements", null, proj.GetUnityMainTargetGuid());
+            manager.AddHealthKit();
+            manager.WriteToFile();
+
+            PlistDocument plist = new PlistDocument();
+            plist.ReadFromString(File.ReadAllText(plistPath));
+
+            PlistElementDict rootDict = plist.root;
+
+            rootDict.SetString("NSHealthShareUsageDescription", "You can check your exercise record on Apple Fitness");
+            rootDict.SetString("NSHealthUpdateUsageDescription", "You can check your exercise record on Apple Fitness");
+
+            File.WriteAllText(plistPath, plist.WriteToString());
         }
     }
 
