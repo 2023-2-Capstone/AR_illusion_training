@@ -13,10 +13,7 @@ public class VelocityWeightText : MonoBehaviour
     public TextMeshProUGUI OutputText;
     public Scrollbar VelocityWeightScrollbar;
     private float VelocityWeight = 1f;
-    
-    void Start(){
-        
-    }
+ 
     void Update(){
         UpdateVelocity();
     }
