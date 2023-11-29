@@ -324,7 +324,7 @@ public class DataSystem : MonoBehaviour
     }
     public float GetRepsPerTime()
     {
-        return RepsPerTime;
+        return Mathf.Round(RepsPerTime * 100f) / 100f;
     }
     public float GetBurnedkcals(){
         return Mathf.Round(Burnedkcals* 100f) / 100f;
