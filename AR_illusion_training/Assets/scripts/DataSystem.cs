@@ -305,9 +305,9 @@ public class DataSystem : MonoBehaviour
 
     public string GetExerciseState(){
         if(Exercise == ExerciseMode.Pullup){
-            return "Pullup";
+            return "Pull-up";
         }else if(Exercise == ExerciseMode.Pushup){
-            return "Pushup";
+            return "Push-up";
         }else{
             return "WrongExerciseMode";
         }
