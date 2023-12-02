@@ -125,7 +125,6 @@ public class DataSystem : MonoBehaviour
             if(HalfReps == 2){
                 Reps++;
                 HalfReps = 0;
-                PlayVibration();
             }
 
             //칼로리 측정
