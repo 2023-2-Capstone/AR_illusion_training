@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using System.Runtime.InteropServices;
+using System.Linq;
 
 
 public class DataSystem : MonoBehaviour
@@ -62,6 +63,8 @@ public class DataSystem : MonoBehaviour
     private float Timer = 0f; //단위는 초
     private bool TimerActivated = false;
     private float RepsPerTime = 0f;
+    private float[] RepsData = new float[5];
+    private int TmpTimer = 0; // RepsData 구하는데 사용
     private float Burnedkcals = 0f;
     private float Pullupkcal = 1f; //77kg 성인남성 기준
     private float Pushupkcal = 0.47f; //77kg 성인남성 기준
@@ -121,11 +124,10 @@ public class DataSystem : MonoBehaviour
                 }
             }
             
-            //HalfReps가 2개면 Reps 한 개로 변환, 진동발생
+            //HalfReps가 2개면 Reps 한 개로 변환
             if(HalfReps == 2){
                 Reps++;
                 HalfReps = 0;
-                PlayVibration();
             }
 
             //칼로리 측정
@@ -136,7 +138,15 @@ public class DataSystem : MonoBehaviour
             }
 
             //시간당 운동 횟수 처리
-            RepsPerTime = Reps / Timer;
+            /*
+            지난 n초간 RepsPerTime은?
+            n초간 한 reps / n
+            음 시파
+            5크기배열을 만들고,
+            1초당 한번씩 저장해야겠다.
+
+            */
+            calculateReps(Timer);
         }
     }
 
@@ -158,6 +168,8 @@ public class DataSystem : MonoBehaviour
         ResetTimer();
         ResetReps();
         ResetBurnedkcals();
+        ResetRepsData();
+        ResetTmpTimer();
         HalfReps = 0;
         CanCountAgain = true;
     }
@@ -183,6 +195,37 @@ public class DataSystem : MonoBehaviour
     */
     public void ResetReps(){
         Reps = 0;
+    }
+    void ResetRepsData(){
+        RepsData = new float[5] {0,0,0,0,0};
+    }
+    void ResetTmpTimer(){
+        TmpTimer = 0;
+    }
+
+    void calculateReps(float currentTime){
+        /*
+        1초, 2초와 같이 정수초일 때만 실행해야한다.
+        단, currentTime이 0.99초 후 다음 틱(프레임)이 1.01초가 되는 경우를 고려해야 한다.
+
+        인덱스의 값들은 그 순간의 총 Reps
+
+        5초전 (index + 1)의 총 Reps와 비교해서 구한다.
+        */
+        int tmpTime = (int)currentTime;
+        if(TmpTimer != tmpTime){
+            TmpTimer = tmpTime;
+            tmpTime %= 5;
+
+            RepsData[tmpTime] = Reps;
+
+            if(tmpTime == 4){
+                RepsPerTime = RepsData[tmpTime] - RepsData[0];
+            }else{
+                RepsPerTime = RepsData[tmpTime] - RepsData[tmpTime + 1];
+            }
+            RepsPerTime /= 5;
+        }
     }
 
     /*
@@ -305,9 +348,9 @@ public class DataSystem : MonoBehaviour
 
     public string GetExerciseState(){
         if(Exercise == ExerciseMode.Pullup){
-            return "Pullup";
+            return "Pull-up";
         }else if(Exercise == ExerciseMode.Pushup){
-            return "Pushup";
+            return "Push-up";
         }else{
             return "WrongExerciseMode";
         }
