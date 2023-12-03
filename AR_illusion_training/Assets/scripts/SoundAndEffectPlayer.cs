@@ -10,7 +10,7 @@ public class SoundAndEffectPlayer : MonoBehaviour
     public Scrollbar EffectWeightScrollbar;
     [SerializeField] private AudioClip[] AudioClips;
     /*
-    오디오 클립 배열에 할당된 오디오
+    오디오 클립 배열에 할당된 오디오 
     index 0 : 우주 사운드
 
     */

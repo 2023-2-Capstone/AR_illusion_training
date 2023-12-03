@@ -224,6 +224,7 @@ public class DataSystem : MonoBehaviour
             }else{
                 RepsPerTime = RepsData[tmpTime] - RepsData[tmpTime + 1];
             }
+            RepsPerTime /= 5;
         }
     }
 
