@@ -55,15 +55,13 @@ public class SoundAndEffectPlayer : MonoBehaviour
         //오디오 설정
         if(dataSystem.GetExerciseState() == "Pull-up"){
             currentAudio.clip = AudioClips[0];
-            Debug.Log("sdfsewrewrwerf");
         }else{
-
+            
         }
-        Debug.Log("sdfsf");
+
         //오디오 재생 또는 정지
         if(dataSystem.GetPlayState() == "Playing"){
             currentAudio.Play();
-            Debug.Log("asdfas");
         }else if(dataSystem.GetPlayState() == "NotPlaying"){
             currentAudio.Stop();
         }
