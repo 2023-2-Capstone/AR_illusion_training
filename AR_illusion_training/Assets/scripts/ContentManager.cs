@@ -22,6 +22,9 @@ public class ContentManager : MonoBehaviour
     private List<RaycastResult> raycastResults=new List<RaycastResult>();
     float Velocity;
     bool isTracking=false;
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
+
 
     public void StartSpeedTracking()
     {
@@ -37,27 +40,44 @@ public class ContentManager : MonoBehaviour
         }
 
     }
+    // public void SpeedCallBackMethod(string speed)
+    // {
+    //     double num=double.Parse(speed);
+    //     Debug.Log($"유니티에서 받은 스피드: {speed}");
+    //     if (num > 3) {
+    //             Vector3 spawnPosition = ARCamera.transform.position + ARCamera.transform.up*10+ARCamera.transform.right*10; //카메라에서 위쪽으로 이동
+    //             //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.right; 오른쪽으로 이동
+    //             //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.left; 왼쪽으로 이동
+    //             // SpawnedBird = Instantiate(WhichBird(), spawnPosition, Quaternion.identity);
+    //             SpawnedBird = Instantiate(MamaBirdPrefab, spawnPosition, Quaternion.Euler(90, 0, 0));
+    //             SpawnEffect = Instantiate(BabyBirdPrefab,ARCamera.transform.position-ARCamera.transform.up,Quaternion.Euler(0,0,0));
+                
+    //             StartCoroutine(FadeOut(SpawnedBird, 3f)); // 3초 동안 페이드 아웃
+    //             StartCoroutine(FadeOut(SpawnEffect, 3f));
+    //             // SpawnedBird.GetComponent<Rigidbody>().AddForce(ray.direction * 100);
+    //         // 이펙트 생성
+    //     }
+    // }
     public void SpeedCallBackMethod(string speed)
     {
-        double num=double.Parse(speed);
+        double num = double.Parse(speed);
         Debug.Log($"유니티에서 받은 스피드: {speed}");
         if (num > 3) {
-                Vector3 spawnPosition = ARCamera.transform.position + ARCamera.transform.up*5; //카메라에서 위쪽으로 이동
-                //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.right; 오른쪽으로 이동
-                //Vector3 spawnPosition = ARCamera.transform.position - ARCamera.transform.left; 왼쪽으로 이동
-                // SpawnedBird = Instantiate(WhichBird(), spawnPosition, Quaternion.identity);
-                SpawnedBird = Instantiate(MamaBirdPrefab, spawnPosition, Quaternion.Euler(90, 0, 0));
-                SpawnEffect = Instantiate(BabyBirdPrefab,ARCamera.transform.position-ARCamera.transform.up,Quaternion.Euler(0,0,0));
-                
-                StartCoroutine(FadeOut(SpawnedBird, 3f)); // 3초 동안 페이드 아웃
-                StartCoroutine(FadeOut(SpawnEffect, 3f));
-                // SpawnedBird.GetComponent<Rigidbody>().AddForce(ray.direction * 100);
-            // 이펙트 생성
+            Vector3 spawnPosition = initialPosition + Vector3.up*10; // 시작 위치 바로 위
+
+            
+
+            SpawnedBird = Instantiate(MamaBirdPrefab, spawnPosition, Quaternion.Euler(90, 0, 0));
+            SpawnEffect = Instantiate(BabyBirdPrefab, ARCamera.transform.position-ARCamera.transform.up, Quaternion.Euler(0,0,0));
+                    
+            StartCoroutine(FadeOut(SpawnedBird, 3f)); // 3초 동안 페이드 아웃
+            StartCoroutine(FadeOut(SpawnEffect, 3f));
         }
     }
     void Start()
     {
-
+        initialPosition = ARCamera.transform.position;
+        initialRotation = ARCamera.transform.rotation;
     }
 
     // Update is called once per frame
@@ -120,4 +140,3 @@ public class ContentManager : MonoBehaviour
         Destroy(obj);
     }
 }
-
