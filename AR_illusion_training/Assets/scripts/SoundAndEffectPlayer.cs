@@ -18,6 +18,8 @@ public class SoundAndEffectPlayer : MonoBehaviour
     private GameObject SpawnEffect2;
     private GameObject SpawnEffect3;
 
+    private bool isPlay=false;
+
     /*
 
     오디오 클립 배열에 할당된 오디오 
@@ -57,8 +59,12 @@ public class SoundAndEffectPlayer : MonoBehaviour
         {
             
         }
-        if (dataSystem.GetReps()%(EffectWeightScrollbar.value*10)==0) {
+        if(dataSystem.GetReps()%(EffectWeightScrollbar.value*10)==EffectWeightScrollbar.value*10-1){
+            isPlay=true;
+        }
+        if (dataSystem.GetReps()%(EffectWeightScrollbar.value*10)==0 && isPlay) {
             SpawnEffect();
+            isPlay=false;
         }
         //EffectWeightScrollbar.value 0~1
         
@@ -79,23 +85,18 @@ public class SoundAndEffectPlayer : MonoBehaviour
             currentAudio.Stop();
         }
     }
-    IEnumerator MyCoroutine()
-    {
-        // 3초 대기
-        yield return new WaitForSeconds(2f);
-        // 이후의 코드는 3초 후에 실행됨
-    }
     public void SpawnEffect(){
-        SpawnEffect1 = Instantiate(Effect1, ARCamera.transform.position-ARCamera.transform.up, Quaternion.Euler(0,0,0));
+        SpawnEffect1 = Instantiate(Effect1, ARCamera.transform.position-ARCamera.transform.up*13, Quaternion.Euler(0,0,0));
 
-        SpawnEffect2 = Instantiate(Effect2, ARCamera.transform.position-ARCamera.transform.up, Quaternion.Euler(0,0,0));
-        SpawnEffect3= Instantiate(Effect3, ARCamera.transform.position-ARCamera.transform.up*5, Quaternion.Euler(0,0,0));
-
+        SpawnEffect2 = Instantiate(Effect2, ARCamera.transform.position-ARCamera.transform.up*13, Quaternion.Euler(0,0,0));
+        SpawnEffect3 = Instantiate(Effect3, ARCamera.transform.position-ARCamera.transform.up*13, Quaternion.Euler(0,0,0));
+        SpawnEffect1.transform.localScale *= 4;
+        SpawnEffect2.transform.localScale *= 4;
+        SpawnEffect3.transform.localScale *= 4;
                     
-        StartCoroutine(FadeOut(SpawnEffect1, 3f)); // 3초 동안 페이드 아웃
-        StartCoroutine(FadeOut(SpawnEffect2, 3f));
-        StartCoroutine(FadeOut(SpawnEffect3, 3f));
-        StartCoroutine(MyCoroutine());
+        StartCoroutine(FadeOut(SpawnEffect1, 10f)); // 3초 동안 페이드 아웃
+        StartCoroutine(FadeOut(SpawnEffect2, 10f));
+        StartCoroutine(FadeOut(SpawnEffect3, 10f));
 
     }
     IEnumerator FadeOut(GameObject obj, float duration)

@@ -6630,7 +6630,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3023fcbdc7fa79149a1538ded6810c3d, type: 3}
   Effect1: {fileID: 7957833072274404953, guid: 3355f6bfa6db8b24281b827de929694c, type: 3}
   Effect2: {fileID: 7155335147208632822, guid: 97c43495f80a3244fad1301dfafbe252, type: 3}
-  Effect3: {fileID: 3377181292992421420, guid: 48c5715f9603c3842a353516a8baefbb, type: 3}
+  Effect3: {fileID: 3744133877081091469, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
   ARCamera: {fileID: 1491581685}
 --- !u!82 &1337200848
 AudioSource:
@@ -12249,14 +12249,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1601028802}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.19023685, z: -0, w: -0.98173827}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2011717551}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -1821.933, z: 0}
 --- !u!114 &1601028805
 MonoBehaviour:
   m_ObjectHideFlags: 0
