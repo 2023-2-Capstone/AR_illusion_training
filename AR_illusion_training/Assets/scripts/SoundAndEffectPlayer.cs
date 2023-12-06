@@ -3,13 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class SoundAndEffectPlayer : MonoBehaviour
 {
     public DataSystem dataSystem;
     public Scrollbar EffectWeightScrollbar;
     [SerializeField] private AudioClip[] AudioClips;
+    public GameObject Effect1;
+    public GameObject Effect2;
+
+    public GameObject Effect3;
+    public Camera ARCamera;
+
+    private GameObject SpawnEffect1;
+    private GameObject SpawnEffect2;
+    private GameObject SpawnEffect3;
+
     /*
+
     오디오 클립 배열에 할당된 오디오 
     index 0 : 우주 사운드
 
@@ -47,9 +57,12 @@ public class SoundAndEffectPlayer : MonoBehaviour
         {
             
         }
+        if (dataSystem.GetReps()%(EffectWeightScrollbar.value*10)==0) {
+            SpawnEffect();
+        }
+        //EffectWeightScrollbar.value 0~1
         
     }
-
     //Play 버튼에서 사용
     public void PlayStopBGM(){
         //오디오 설정
@@ -66,8 +79,40 @@ public class SoundAndEffectPlayer : MonoBehaviour
             currentAudio.Stop();
         }
     }
+    IEnumerator MyCoroutine()
+    {
+        // 3초 대기
+        yield return new WaitForSeconds(2f);
+        // 이후의 코드는 3초 후에 실행됨
+    }
+    public void SpawnEffect(){
+        SpawnEffect1 = Instantiate(Effect1, ARCamera.transform.position-ARCamera.transform.up, Quaternion.Euler(0,0,0));
 
+        SpawnEffect2 = Instantiate(Effect2, ARCamera.transform.position-ARCamera.transform.up, Quaternion.Euler(0,0,0));
+        SpawnEffect3= Instantiate(Effect3, ARCamera.transform.position-ARCamera.transform.up*5, Quaternion.Euler(0,0,0));
 
+                    
+        StartCoroutine(FadeOut(SpawnEffect1, 3f)); // 3초 동안 페이드 아웃
+        StartCoroutine(FadeOut(SpawnEffect2, 3f));
+        StartCoroutine(FadeOut(SpawnEffect3, 3f));
+        StartCoroutine(MyCoroutine());
 
+    }
+    IEnumerator FadeOut(GameObject obj, float duration)
+    {
+        Renderer renderer = obj.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Material mat = renderer.material;
+            Color initialColor = mat.color;
+            for (float t = 0; t < 1; t += Time.deltaTime / duration)
+            {
+                Color newColor = new Color(initialColor.r, initialColor.g, initialColor.b, Mathf.Lerp(1, 0, t));
+                mat.color = newColor;
+                yield return null;
+            }
+        }
+        Destroy(obj);
+    }
 
 }

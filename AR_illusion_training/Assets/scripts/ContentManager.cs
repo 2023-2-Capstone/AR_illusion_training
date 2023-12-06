@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 
 public class ContentManager : MonoBehaviour
 {
-#if UNITY_IOS
-    [DllImport("__Internal")]
-    private static extern void _startTracking(string objectName);
-#endif
+    #if UNITY_IOS
+        [DllImport("__Internal")]
+        private static extern void _startTracking(string objectName);
+    #endif
     public Toggle BirdToggle;
     public GameObject MamaBirdPrefab;
     public GameObject BabyBirdPrefab;
@@ -22,6 +22,9 @@ public class ContentManager : MonoBehaviour
     private List<RaycastResult> raycastResults=new List<RaycastResult>();
     float Velocity;
     bool isTracking=false;
+
+
+
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
