@@ -66,8 +66,7 @@ public class SoundAndEffectPlayer : MonoBehaviour
             SpawnEffect();
             isPlay=false;
         }
-        //EffectWeightScrollbar.value 0~1
-        
+        //EffectWeightScrollbar.value 0~1    
     }
     //Play 버튼에서 사용
     public void PlayStopBGM(){
