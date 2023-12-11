@@ -20,28 +20,13 @@ public class SoundAndEffectPlayer : MonoBehaviour
 
     private bool isPlay=false;
 
-    /*
-
-    오디오 클립 배열에 할당된 오디오 
-    index 0 : 우주 사운드
-
-    */
     private AudioSource currentAudio;
-
-    /*
-    Stop 상태는 앵커 박기?
-
-    Play 상태여야 모든것이 작동
-    이때 pullup인지 pushup인지에 따라 재생할 것이 다름
-
-    pullup이면 천장에 이펙트 재생, 소리도
-    pushup이면 바닥에 이펙트 재생, 소리도
-
-    일단 여기까지
-    */
     
+    GameObject soundPlayer;
+
     void Start()
     {
+        soundPlayer = GameObject.Find("SoundPlayer");
         currentAudio = GetComponent<AudioSource>();
     }
 
@@ -68,22 +53,13 @@ public class SoundAndEffectPlayer : MonoBehaviour
         }
         //EffectWeightScrollbar.value 0~1    
     }
-    //Play 버튼에서 사용
-    public void PlayStopBGM(){
-        //오디오 설정
-        if(dataSystem.GetExerciseState() == "Pull-up"){
-            currentAudio.clip = AudioClips[0];
-        }else{
-            
-        }
 
-        //오디오 재생 또는 정지
-        if(dataSystem.GetPlayState() == "Playing"){
-            currentAudio.Play();
-        }else if(dataSystem.GetPlayState() == "NotPlaying"){
-            currentAudio.Stop();
-        }
+
+    //Play 버튼에서 사용
+    public void PlayButtonSound(){
+        soundPlayer.GetComponent<SoundPlayer>().PlayButton2Audio();
     }
+
     public void SpawnEffect(){
         SpawnEffect1 = Instantiate(Effect1, ARCamera.transform.position-ARCamera.transform.up*13, Quaternion.Euler(0,0,0));
 

@@ -37,5 +37,6 @@ public class SoundPlayer : MonoBehaviour
     public void PlayInvasionAudio(){
         currentBGMAudio.clip = InvasionAudio;
         currentBGMAudio.Play();
+        currentBGMAudio.loop = true;
     }
 }
