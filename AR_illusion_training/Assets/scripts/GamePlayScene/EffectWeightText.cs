@@ -14,8 +14,9 @@ public class EffectWeightText : MonoBehaviour
     private float VelocityWeight = 1f;
 
     public void UpdateVelocity() {
-        VelocityWeight = VelocityWeightScrollbar.value * 2;
-        VelocityWeight = (float)Math.Round(VelocityWeight, 1);
+        VelocityWeight = VelocityWeightScrollbar.value * 47 + 3;
+        VelocityWeight = (float)Math.Round(VelocityWeight);
         OutputText.text = VelocityWeight.ToString(); // Velocity 값을 문자열로 변환하여 표시
+        OutputText.text = string.Format("목표 횟수 : {0}", VelocityWeight);
     }
 }

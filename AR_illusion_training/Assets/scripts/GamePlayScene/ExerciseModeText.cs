@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,7 +10,6 @@ public class ExerciseModeText : MonoBehaviour
     public GameObject DataSys;
     
     public void OnClikedPlay(){
-        OutputText.text = DataSys.GetComponent<DataSystem>().GetExerciseState();
+        OutputText.text = string.Format("Mode : {0}", DataSys.GetComponent<DataSystem>().GetExerciseState());
     }
-    
 }

@@ -12,10 +12,10 @@ public class PlayButton : MonoBehaviour
     public Button Button;
     public TextMeshProUGUI PlayText;
     public TextMeshProUGUI WeightText;
-    // Start is called before the first frame update
+    GameObject soundPlayer;
     void Start()
     {
-
+        soundPlayer = GameObject.Find("SoundPlayer");
     }
 
     // Update is called once per frame
@@ -30,6 +30,7 @@ public class PlayButton : MonoBehaviour
         }
     }
     public void OnClickedPlay(){
+        soundPlayer.GetComponent<SoundPlayer>().PlayButtonAudio();
         SceneManager.LoadScene("StoryText", LoadSceneMode.Single);
     }
 
