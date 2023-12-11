@@ -30,7 +30,7 @@ public class PlayButton : MonoBehaviour
         }
     }
     public void OnClickedPlay(){
-        SceneManager.LoadScene("GamePlayScene", LoadSceneMode.Single);
+        SceneManager.LoadScene("StoryText", LoadSceneMode.Single);
     }
 
 }

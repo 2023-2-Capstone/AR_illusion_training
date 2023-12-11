@@ -8,15 +8,18 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ExampleAssets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
-    path: Assets/First.unity
-    guid: 48755527b6e304b6ca28729b0f1fe51b
   - enabled: 1
     path: Assets/MainMenu.unity
     guid: 06f1201ecd5067a428be861fa0d87d78
   - enabled: 1
     path: Assets/BioData.unity
     guid: debcd331883954647b292ebe609019df
+  - enabled: 0
+    path: Assets/First.unity
+    guid: 48755527b6e304b6ca28729b0f1fe51b
+  - enabled: 1
+    path: Assets/StoryText.unity
+    guid: 3c1316471067dca4eb339cd894751783
   - enabled: 1
     path: Assets/GamePlayScene.unity
     guid: a15dbd95cc746144491873c2675f95c8
