@@ -63,31 +63,30 @@ public class SoundAndEffectPlayer : MonoBehaviour
         soundPlayer.GetComponent<SoundPlayer>().PlayButton2Audio();
     }
 
-    //경고 1단계
-    public void WarnLevel1(){
+    //경고 함수. 1단계 ~ 3단계가 있음
+    void Warning(int WarningLevel){
         currentAudio.clip = AudioClips[0];
-        currentAudio.pitch = 0.65f;
-        currentAudio.Play();
-        WarningText.text = "적이 가까워지고 있습니다.\n안전거리를 확보하세요.";
-        dataSystem.PlayVibration();
-    }
-    //경고 2단계
-    public void WarnLevel2(){
-        currentAudio.clip = AudioClips[0];
-        currentAudio.pitch = 1.1f;
-        currentAudio.Play();
-        WarningText.text = "적이 지나치게 가깝습니다.\n늦게 전에 적을 몰아내세요";
-        dataSystem.PlayVibration();
-    }
-    //경고 3단계
-    public void WarnLevel3(){
-        currentAudio.clip = AudioClips[0];
-        currentAudio.pitch = 2.02f;
-        currentAudio.Play();
-        WarningText.text = "행운을 빕니다.";
-        dataSystem.PlayVibration();
-    }
+        switch (WarningLevel){
+            case 1:
+                currentAudio.pitch = 0.65f;
+                WarningText.text = "적이 가까워지고 있습니다.\n안전거리를 확보하세요.";
+                break;
+            case 2:
+                currentAudio.pitch = 1.1f;
+                WarningText.text = "적이 지나치게 가깝습니다.\n늦게 전에 적을 몰아내세요";
+                break;
 
+            case 3:
+                currentAudio.pitch = 2.02f;
+                WarningText.text = "행운을 빕니다.";
+                break;
+
+            default:
+                break;
+        }
+        currentAudio.Play();
+        dataSystem.PlayVibration();
+    }
 
 
     public void SpawnEffect(){
