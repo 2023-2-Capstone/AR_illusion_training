@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 public class SoundAndEffectPlayer : MonoBehaviour
 {
     public DataSystem dataSystem;
     public Scrollbar EffectWeightScrollbar;
+    public TextMeshProUGUI WarningText;
     [SerializeField] private AudioClip[] AudioClips;
+    private AudioSource currentAudio;
+    GameObject soundPlayer;
+
     public GameObject Effect1;
     public GameObject Effect2;
 
@@ -20,10 +25,7 @@ public class SoundAndEffectPlayer : MonoBehaviour
 
     private bool isPlay=false;
 
-    private AudioSource currentAudio;
-    
-    GameObject soundPlayer;
-
+  
     void Start()
     {
         soundPlayer = GameObject.Find("SoundPlayer");

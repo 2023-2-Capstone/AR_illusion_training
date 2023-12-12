@@ -673,7 +673,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1337200847}
         m_TargetAssemblyTypeName: SoundAndEffectPlayer, Assembly-CSharp
-        m_MethodName: PlayStopBGM
+        m_MethodName: PlayButtonSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6532,6 +6532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataSystem: {fileID: 633314361}
   EffectWeightScrollbar: {fileID: 501116258}
+  WarningText: {fileID: 1494299844}
   AudioClips:
   - {fileID: 8300000, guid: 92f7095e46ccdaa48bfea1cdcbb9e772, type: 3}
   - {fileID: 8300000, guid: 70e04267874718647b2ca7e804ce5941, type: 3}
