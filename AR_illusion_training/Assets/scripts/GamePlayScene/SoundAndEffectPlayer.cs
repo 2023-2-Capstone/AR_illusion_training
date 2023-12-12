@@ -35,18 +35,17 @@ public class SoundAndEffectPlayer : MonoBehaviour
 
     void Update()
     {
+        /*
         if(dataSystem.GetPlayState() == "Playing")
         {
-            if(dataSystem.GetExerciseState() == "Pull-up"){
-                
-            }else if(dataSystem.GetExerciseState() == "Push-up"){
-                
-            }
+           
         }
         else if(dataSystem.GetPlayState() == "NotPlaying")
         {
             
         }
+        */
+
         if(dataSystem.GetReps()%(EffectWeightScrollbar.value*10)==EffectWeightScrollbar.value*10-1){
             isPlay=true;
         }
@@ -61,6 +60,8 @@ public class SoundAndEffectPlayer : MonoBehaviour
     //Play 버튼에서 사용
     public void PlayButtonSound(){
         soundPlayer.GetComponent<SoundPlayer>().PlayButton2Audio();
+        //경고메세지 초기화
+        WarningText.text = "";
     }
 
     //경고 함수. 1단계 ~ 3단계가 있음
@@ -86,6 +87,16 @@ public class SoundAndEffectPlayer : MonoBehaviour
         }
         currentAudio.Play();
         dataSystem.PlayVibration();
+    }
+
+    //게임오버 함수
+    void GameOver(){
+        currentAudio.clip = AudioClips[1];
+        currentAudio.Play();
+        currentAudio.pitch = 1;
+        dataSystem.PlayVibration();
+        WarningText.text = "당신은 죽었습니다.";
+        dataSystem.ChangePlayState();
     }
 
 
