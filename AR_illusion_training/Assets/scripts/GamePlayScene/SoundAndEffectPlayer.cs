@@ -30,6 +30,7 @@ public class SoundAndEffectPlayer : MonoBehaviour
     {
         soundPlayer = GameObject.Find("SoundPlayer");
         currentAudio = GetComponent<AudioSource>();
+        WarningText.text = "";
     }
 
     void Update()
@@ -61,6 +62,33 @@ public class SoundAndEffectPlayer : MonoBehaviour
     public void PlayButtonSound(){
         soundPlayer.GetComponent<SoundPlayer>().PlayButton2Audio();
     }
+
+    //경고 1단계
+    public void WarnLevel1(){
+        currentAudio.clip = AudioClips[0];
+        currentAudio.pitch = 0.65f;
+        currentAudio.Play();
+        WarningText.text = "적이 가까워지고 있습니다.\n안전거리를 확보하세요.";
+        dataSystem.PlayVibration();
+    }
+    //경고 2단계
+    public void WarnLevel2(){
+        currentAudio.clip = AudioClips[0];
+        currentAudio.pitch = 1.1f;
+        currentAudio.Play();
+        WarningText.text = "적이 지나치게 가깝습니다.\n늦게 전에 적을 몰아내세요";
+        dataSystem.PlayVibration();
+    }
+    //경고 3단계
+    public void WarnLevel3(){
+        currentAudio.clip = AudioClips[0];
+        currentAudio.pitch = 2.02f;
+        currentAudio.Play();
+        WarningText.text = "행운을 빕니다.";
+        dataSystem.PlayVibration();
+    }
+
+
 
     public void SpawnEffect(){
         SpawnEffect1 = Instantiate(Effect1, ARCamera.transform.position-ARCamera.transform.up*13, Quaternion.Euler(0,0,0));
