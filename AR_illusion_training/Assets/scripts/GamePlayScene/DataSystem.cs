@@ -50,7 +50,7 @@ public class DataSystem : MonoBehaviour
     }
 
     GameObject UserWeightData;
-
+    
     private int UserWeight = 0;
     private bool isTracking = false;
     private bool CanCountAgain = true; //프레임마다 카운팅 방지
