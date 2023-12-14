@@ -18,23 +18,49 @@ public class SoundAndEffectPlayer : MonoBehaviour
 
     public GameObject Effect3;
     public Camera ARCamera;
-
+    public GameObject Ceiling;
+    private GameObject SpawnCeiling;
     private GameObject SpawnEffect1;
     private GameObject SpawnEffect2;
     private GameObject SpawnEffect3;
-
+    public Animator animator;
     private bool isPlay=false;
-
-  
+    public GameObject Alien;
+    private GameObject SpawnAlien;
+    private int cur=0;
+    private float approachSpeed = 0.1f;
+    private bool Spawn=true;
     void Start()
     {
+
+
         soundPlayer = GameObject.Find("SoundPlayer");
         currentAudio = GetComponent<AudioSource>();
         WarningText.text = "";
+        // SpawnAlien = Instantiate(Alien, ARCamera.transform.position+ARCamera.transform.forward*10, Quaternion.Euler(0,180,0));
+
     }
 
     void Update()
     {
+        
+        if(dataSystem.GetPlayState()=="Playing" && Spawn){
+            SpawnAlien = Instantiate(Alien, ARCamera.transform.position+ARCamera.transform.forward*10-ARCamera.transform.up*2, Quaternion.Euler(0,180,0));
+            SpawnCeiling = Instantiate(Ceiling, ARCamera.transform.position+ARCamera.transform.up*10, Quaternion.Euler(90,0,0));
+            
+            Spawn=false;
+        }
+        if(dataSystem.GetPlayState()=="NotPlaying"){
+            Destroy(SpawnAlien);
+            Destroy(SpawnCeiling);
+            Destroy(SpawnEffect1);
+            Destroy(SpawnEffect2);
+            Destroy(SpawnEffect3);
+
+
+            
+            Spawn=true;
+        }
         /*
         if(dataSystem.GetPlayState() == "Playing")
         {
@@ -45,15 +71,32 @@ public class SoundAndEffectPlayer : MonoBehaviour
             
         }
         */
-
-        if(dataSystem.GetReps()%(EffectWeightScrollbar.value*10)==EffectWeightScrollbar.value*10-1){
+        if(cur!=dataSystem.GetReps()){
             isPlay=true;
+            cur=dataSystem.GetReps();
         }
-        if (dataSystem.GetReps()%(EffectWeightScrollbar.value*10)==0 && isPlay) {
+        if (isPlay) {
             SpawnEffect();
+            if(dataSystem.GetReps()%3==0){
+                SpawnEffect1 = Instantiate(Effect1, SpawnAlien.transform.position, Quaternion.Euler(0,0,0));
+                StartCoroutine(FadeOut(SpawnEffect1, 3f)); // 3초 동안 페이드 아웃
+
+            }
             isPlay=false;
         }
-        //EffectWeightScrollbar.value 0~1    
+        if(dataSystem.GetReps()>=(EffectWeightScrollbar.value*47+3)){
+            StartCoroutine(FadeOut(SpawnAlien,3f));
+        }
+        //EffectWeightScrollbar.value 0~1    dataSystem.GetReps()%(EffectWeightScrollbar.value*10)==0
+        Vector3 directionToCamera = (ARCamera.transform.position - SpawnAlien.transform.position).normalized;
+
+        // 목표 위치 계산
+        Vector3 targetPosition = ARCamera.transform.position - directionToCamera;
+
+        // 외계인의 현재 위치에서 목표 위치까지 서서히 다가오도록 보간
+        SpawnAlien.transform.position = Vector3.Lerp(SpawnAlien.transform.position, targetPosition, Time.deltaTime * approachSpeed);
+        
+
     }
 
 
@@ -87,6 +130,7 @@ public class SoundAndEffectPlayer : MonoBehaviour
         }
         currentAudio.Play();
         dataSystem.PlayVibration();
+
     }
 
     //게임오버 함수
@@ -101,18 +145,12 @@ public class SoundAndEffectPlayer : MonoBehaviour
 
 
     public void SpawnEffect(){
-        SpawnEffect1 = Instantiate(Effect1, ARCamera.transform.position-ARCamera.transform.up*13, Quaternion.Euler(0,0,0));
 
-        SpawnEffect2 = Instantiate(Effect2, ARCamera.transform.position-ARCamera.transform.up*13, Quaternion.Euler(0,0,0));
-        SpawnEffect3 = Instantiate(Effect3, ARCamera.transform.position-ARCamera.transform.up*13, Quaternion.Euler(0,0,0));
-        SpawnEffect1.transform.localScale *= 4;
-        SpawnEffect2.transform.localScale *= 4;
-        SpawnEffect3.transform.localScale *= 4;
+        SpawnEffect2 = Instantiate(Effect2, SpawnAlien.transform.position, Quaternion.Euler(0,0,0));
+        SpawnEffect3 = Instantiate(Effect3, SpawnAlien.transform.position, Quaternion.Euler(0,0,0));
                     
-        StartCoroutine(FadeOut(SpawnEffect1, 10f)); // 3초 동안 페이드 아웃
-        StartCoroutine(FadeOut(SpawnEffect2, 10f));
-        StartCoroutine(FadeOut(SpawnEffect3, 10f));
-
+        StartCoroutine(FadeOut(SpawnEffect2, 2f));
+        StartCoroutine(FadeOut(SpawnEffect3, 2f));
     }
     IEnumerator FadeOut(GameObject obj, float duration)
     {
