@@ -30,10 +30,9 @@ public class SoundAndEffectPlayer : MonoBehaviour
     private int cur=0;
     private float approachSpeed = 0.1f;
     private bool Spawn=true;
+
     void Start()
     {
-
-
         soundPlayer = GameObject.Find("SoundPlayer");
         currentAudio = GetComponent<AudioSource>();
         WarningText.text = "";
@@ -57,20 +56,9 @@ public class SoundAndEffectPlayer : MonoBehaviour
             Destroy(SpawnEffect2);
             Destroy(SpawnEffect3);
 
-
-            
             Spawn=true;
         }
-        /*
-        if(dataSystem.GetPlayState() == "Playing")
-        {
-           
-        }
-        else if(dataSystem.GetPlayState() == "NotPlaying")
-        {
-            
-        }
-        */
+
         if(cur!=dataSystem.GetReps()){
             isPlay=true;
             cur=dataSystem.GetReps();
@@ -110,6 +98,7 @@ public class SoundAndEffectPlayer : MonoBehaviour
     //경고 함수. 1단계 ~ 3단계가 있음
     void Warning(int WarningLevel){
         currentAudio.clip = AudioClips[0];
+        WarningText.color = Color.red;
         switch (WarningLevel){
             case 1:
                 currentAudio.pitch = 0.65f;
@@ -135,11 +124,23 @@ public class SoundAndEffectPlayer : MonoBehaviour
 
     //게임오버 함수
     void GameOver(){
+        WarningText.color = Color.red;
         currentAudio.clip = AudioClips[1];
         currentAudio.Play();
         currentAudio.pitch = 1;
         dataSystem.PlayVibration();
         WarningText.text = "당신은 죽었습니다.";
+        dataSystem.ChangePlayState();
+    }
+
+    //게임클리어 함수
+    void GameClear(){
+        WarningText.color = Color.green;
+        currentAudio.clip = AudioClips[2];
+        currentAudio.Play();
+        currentAudio.pitch = 1;
+        dataSystem.PlayVibration();
+        WarningText.text = "생존에 성공하셨습니다.";
         dataSystem.ChangePlayState();
     }
 
