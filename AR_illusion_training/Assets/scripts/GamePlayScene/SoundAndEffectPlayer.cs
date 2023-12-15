@@ -34,7 +34,7 @@ public class SoundAndEffectPlayer : MonoBehaviour
     private float initDistance = 0;
     private float currentDistance = 0;
     private int WarnStack = 0;
-
+    private bool GameEndFlag = false;
 
 
     void Start()
@@ -57,6 +57,7 @@ public class SoundAndEffectPlayer : MonoBehaviour
             initDistance = Vector3.Distance(ARCamera.transform.position,SpawnAlien.transform.position);
             //경고 스택 초기화
             WarnStack = 3;
+            GameEndFlag = false;
             Spawn=false;
         }
         if(dataSystem.GetPlayState()=="NotPlaying"){
@@ -76,19 +77,21 @@ public class SoundAndEffectPlayer : MonoBehaviour
 
         if (isPlay) {
             SpawnEffect();
-            //게임오버
             if(dataSystem.GetReps()%3==0){
                 SpawnEffect1 = Instantiate(Effect1, SpawnAlien.transform.position, Quaternion.Euler(0,0,0));
                 StartCoroutine(FadeOut(SpawnEffect1, 3f)); // 3초 동안 페이드 아웃
-                GameOver();
             }
             isPlay=false;
         }
-        //게임 클리어
+
         if(dataSystem.GetReps()>=(EffectWeightScrollbar.value*47+3)){
             StartCoroutine(FadeOut(SpawnAlien,3f));
-            GameClear();
+            if(GameEndFlag == false){
+                GameClear();
+                GameEndFlag = true;
+            }
         }
+
         //EffectWeightScrollbar.value 0~1    dataSystem.GetReps()%(EffectWeightScrollbar.value*10)==0
         Vector3 directionToCamera = (ARCamera.transform.position - SpawnAlien.transform.position).normalized;
 
@@ -101,8 +104,16 @@ public class SoundAndEffectPlayer : MonoBehaviour
         //현재 거리와 경고 스택를 활용해서 경고메세지 출력
         currentDistance = Vector3.Distance(ARCamera.transform.position,SpawnAlien.transform.position);
         if(currentDistance <= initDistance * WarnStack / 5){
-            Warning(WarnStack);
-            WarnStack -= 1;
+            if(WarnStack <= 3 && WarnStack >= 1){    
+                Warning(WarnStack);
+                WarnStack -= 1;
+            }
+        }
+        //현재 거리가 특정거리 이하면 게임오버
+        if(currentDistance <= initDistance / 6 && GameEndFlag == false){
+            GameOver();
+            StartCoroutine(FadeOut(SpawnAlien,3f));
+            GameEndFlag = true;
         }
     }
 
@@ -144,22 +155,22 @@ public class SoundAndEffectPlayer : MonoBehaviour
     void GameOver(){
         WarningText.color = Color.red;
         currentAudio.clip = AudioClips[1];
-        currentAudio.Play();
         currentAudio.pitch = 1;
+        currentAudio.Play();
         dataSystem.PlayVibration();
         WarningText.text = "당신은 죽었습니다.";
-        dataSystem.ChangePlayState();
+        dataSystem.StopTimer();
     }
 
     //게임클리어 함수
     void GameClear(){
         WarningText.color = Color.green;
         currentAudio.clip = AudioClips[2];
-        currentAudio.Play();
         currentAudio.pitch = 1;
+        currentAudio.Play();
         dataSystem.PlayVibration();
         WarningText.text = "생존에 성공하셨습니다.";
-        dataSystem.ChangePlayState();
+        dataSystem.StopTimer();
     }
 
 
