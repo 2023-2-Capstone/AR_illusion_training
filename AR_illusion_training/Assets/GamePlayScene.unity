@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6612,6 +6612,7 @@ MonoBehaviour:
   AudioClips:
   - {fileID: 8300000, guid: 63cc428c59fb4614fb80f879b66a86ae, type: 3}
   - {fileID: 8300000, guid: f00c80a1ab7079b499a4477a9f06a552, type: 3}
+  - {fileID: 8300000, guid: 3a34a2e1ff7b75540b014d5aa794299f, type: 3}
   Effect1: {fileID: 7957833072274404953, guid: 3355f6bfa6db8b24281b827de929694c, type: 3}
   Effect2: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
   Effect3: {fileID: 2965222256817593503, guid: a164e676dbbd6e54587237e619372c98, type: 3}
@@ -7126,8 +7127,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9.6227, y: -188}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -0.00002861, y: -179.81131}
+  m_SizeDelta: {x: 390, y: 230.4073}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1494299844
 MonoBehaviour:
@@ -7177,8 +7178,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
