@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 public class SoundAndEffectPlayer : MonoBehaviour
@@ -30,6 +31,11 @@ public class SoundAndEffectPlayer : MonoBehaviour
     private int cur=0;
     private float approachSpeed = 0.1f;
     private bool Spawn=true;
+    private float initDistance = 0;
+    private float currentDistance = 0;
+    private int WarnStack = 0;
+
+
 
     void Start()
     {
@@ -47,6 +53,10 @@ public class SoundAndEffectPlayer : MonoBehaviour
             SpawnAlien = Instantiate(Alien, ARCamera.transform.position+ARCamera.transform.forward*10-ARCamera.transform.up*2, Quaternion.Euler(0,180,0));
             SpawnCeiling = Instantiate(Ceiling, ARCamera.transform.position+ARCamera.transform.up*10, Quaternion.Euler(90,0,0));
             
+            //초기거리 계산
+            initDistance = Vector3.Distance(ARCamera.transform.position,SpawnAlien.transform.position);
+            //경고 스택 초기화
+            WarnStack = 3;
             Spawn=false;
         }
         if(dataSystem.GetPlayState()=="NotPlaying"){
@@ -63,17 +73,21 @@ public class SoundAndEffectPlayer : MonoBehaviour
             isPlay=true;
             cur=dataSystem.GetReps();
         }
+
         if (isPlay) {
             SpawnEffect();
+            //게임오버
             if(dataSystem.GetReps()%3==0){
                 SpawnEffect1 = Instantiate(Effect1, SpawnAlien.transform.position, Quaternion.Euler(0,0,0));
                 StartCoroutine(FadeOut(SpawnEffect1, 3f)); // 3초 동안 페이드 아웃
-
+                GameOver();
             }
             isPlay=false;
         }
+        //게임 클리어
         if(dataSystem.GetReps()>=(EffectWeightScrollbar.value*47+3)){
             StartCoroutine(FadeOut(SpawnAlien,3f));
+            GameClear();
         }
         //EffectWeightScrollbar.value 0~1    dataSystem.GetReps()%(EffectWeightScrollbar.value*10)==0
         Vector3 directionToCamera = (ARCamera.transform.position - SpawnAlien.transform.position).normalized;
@@ -84,7 +98,12 @@ public class SoundAndEffectPlayer : MonoBehaviour
         // 외계인의 현재 위치에서 목표 위치까지 서서히 다가오도록 보간
         SpawnAlien.transform.position = Vector3.Lerp(SpawnAlien.transform.position, targetPosition, Time.deltaTime * approachSpeed);
         
-
+        //현재 거리와 경고 스택를 활용해서 경고메세지 출력
+        currentDistance = Vector3.Distance(ARCamera.transform.position,SpawnAlien.transform.position);
+        if(currentDistance <= initDistance * WarnStack / 5){
+            Warning(WarnStack);
+            WarnStack -= 1;
+        }
     }
 
 
@@ -100,7 +119,7 @@ public class SoundAndEffectPlayer : MonoBehaviour
         currentAudio.clip = AudioClips[0];
         WarningText.color = Color.red;
         switch (WarningLevel){
-            case 1:
+            case 3:
                 currentAudio.pitch = 0.65f;
                 WarningText.text = "적이 가까워지고 있습니다.\n안전거리를 확보하세요.";
                 break;
@@ -109,11 +128,10 @@ public class SoundAndEffectPlayer : MonoBehaviour
                 WarningText.text = "적이 지나치게 가깝습니다.\n늦게 전에 적을 몰아내세요";
                 break;
 
-            case 3:
+            case 1:
                 currentAudio.pitch = 2.02f;
                 WarningText.text = "행운을 빕니다.";
                 break;
-
             default:
                 break;
         }
